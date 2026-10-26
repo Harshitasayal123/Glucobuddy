@@ -1,0 +1,267 @@
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  font-family: 'DM Sans', sans-serif;
+  color: #18352e;
+  background: #f5f8f6;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #f5f8f6;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #82cbb0;
+  outline-offset: 2px;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+.navbar {
+  background: #ffffff;
+  color: #18352e;
+  padding: 22px clamp(20px, 5vw, 64px);
+  border-bottom: 1px solid #e4ece7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.navbar h1 {
+  margin: 0;
+  font-family: 'Manrope', sans-serif;
+  font-size: 29px;
+  font-weight: 800;
+  letter-spacing: -1.2px;
+}
+
+.navbar h1::first-letter {
+  color: #14966b;
+}
+
+.navbar p {
+  margin: 5px 0 0;
+  color: #71857c;
+  font-size: 14px;
+}
+
+.dashboard {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 34px 24px 60px;
+}
+
+.welcome {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(115deg, #e1f5e9 0%, #eff9f1 60%, #e4f5ee 100%);
+  padding: clamp(25px, 5vw, 42px);
+  border: 1px solid #d6ecdf;
+  border-radius: 24px;
+  box-shadow: 0 8px 30px rgba(34, 91, 64, 0.04);
+}
+
+.welcome::after {
+  content: '';
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border: 28px solid rgba(20, 150, 107, 0.07);
+  border-radius: 50%;
+  right: -45px;
+  top: -60px;
+  pointer-events: none;
+}
+
+.welcome h2 {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 12px;
+  color: #18352e;
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(25px, 4vw, 36px);
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.welcome p {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+  margin: 0;
+  color: #577168;
+  line-height: 1.8;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 22px;
+  margin-top: 24px;
+}
+
+.card {
+  min-width: 0;
+  padding: 25px;
+  border: 1px solid #e3ebe5;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 5px 20px rgba(29, 65, 48, 0.035);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  border-color: #c9e4d5;
+  box-shadow: 0 10px 28px rgba(29, 65, 48, 0.06);
+}
+
+.card h3 {
+  margin: 0 0 12px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+}
+
+.card h4 {
+  margin: 22px 0 12px;
+  font-size: 15px;
+}
+
+.card p {
+  color: #71857c;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.card button {
+  border: 0;
+  border-radius: 11px;
+  padding: 12px 18px;
+  background: #13865f;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.card button:hover {
+  background: #0d6e4c;
+  transform: translateY(-1px);
+}
+
+.card button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.card input,
+.card select {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin: 8px 0 16px;
+  padding: 10px 12px;
+  border: 1px solid #dce7df;
+  border-radius: 10px;
+  background: #fbfdfb;
+  color: #18352e;
+}
+
+.card input[type='file'] {
+  padding: 9px;
+}
+
+.card label {
+  display: block;
+  margin-top: 14px;
+  color: #38574a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.card img {
+  display: block;
+  max-width: 100%;
+}
+
+.card hr {
+  border: 0;
+  border-top: 1px solid #e8efea;
+  margin: 20px 0;
+}
+
+.card form {
+  margin-top: 18px;
+  padding-top: 8px;
+}
+
+.card form button {
+  margin-top: 4px;
+}
+
+@media (min-width: 1100px) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    padding: 19px 20px;
+  }
+
+  .navbar h1 {
+    font-size: 25px;
+  }
+
+  .dashboard {
+    padding: 22px 15px 40px;
+  }
+
+  .welcome {
+    border-radius: 18px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 17px;
+  }
+
+  .card {
+    padding: 20px;
+    border-radius: 16px;
+  }
+}

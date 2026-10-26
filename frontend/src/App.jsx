@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer
+} from 'recharts'
 function App() {
   const [showMealForm, setShowMealForm] = useState(false)
 
@@ -19,6 +27,7 @@ function App() {
   const [glucoseContext, setGlucoseContext] = useState('before_meal')
 
   const [analysis, setAnalysis] = useState([])
+  const [glucoseHistory, setGlucoseHistory] = useState([])
   const [showInsights, setShowInsights] = useState(false)
 
   // Load foods from backend
@@ -184,6 +193,7 @@ setFoods(formattedFoods)
 
       if (response.ok) {
         alert('Glucose recorded successfully!')
+        await loadGlucoseHistory()
         setGlucoseValue('')
         setGlucoseContext('before_meal')
         setShowGlucoseForm(false)
@@ -195,7 +205,40 @@ setFoods(formattedFoods)
       alert('Could not connect to the backend.')
     }
   }
+// Load glucose history
+const loadGlucoseHistory = async () => {
+  try {
+    const response = await fetch(
+      'http://127.0.0.1:8000/glucose'
+    )
 
+    const data = await response.json()
+
+    if (response.ok) {
+      const readings = (data.readings || [])
+        .map((reading) => ({
+          id: reading[0],
+          glucose: Number(reading[2]),
+          time: reading[3],
+          context: reading[4],
+          contextLabel:
+          reading[4] === 'before_meal'
+          ? 'Before Meal'
+          : 'After Meal',
+        }))
+        .sort(
+          (a, b) => new Date(a.time) - new Date(b.time)
+        )
+
+      setGlucoseHistory(readings)
+    } else {
+      alert('Could not load glucose history')
+    }
+  } catch (error) {
+    console.error('Glucose history error:', error)
+    alert('Could not connect to the backend.')
+  }
+}
   // Load insights
   const loadAnalysis = async () => {
     try {
@@ -238,6 +281,28 @@ setFoods(formattedFoods)
           </p>
         </section>
 
+<h2 className="section-heading">Your Health Dashboard</h2>        
+<section className="summary-grid">
+  <div className="summary-card">
+    <span className="summary-label">🍽️ FOOD TRACKING</span>
+    <h3>Track Your Meals</h3>
+    <p>Keep a record of the foods you eat.</p>
+  </div>
+
+  <div className="summary-card">
+    <span className="summary-label">🩸 GLUCOSE TRACKING</span>
+    <h3>Log Your Readings</h3>
+    <p>Record your blood glucose measurements.</p>
+  </div>
+
+  <div className="summary-card">
+    <span className="summary-label">📊 PERSONAL INSIGHTS</span>
+    <h3>Understand Your Patterns</h3>
+    <p>Explore insights from your recorded data.</p>
+  </div>
+</section>
+
+<h2 className="section-heading">Your Tools</h2>
         <section className="cards">
 
           {/* ========================= */}
@@ -565,6 +630,72 @@ setFoods(formattedFoods)
 
           </div>
 
+                </section>
+
+        {/* GLUCOSE HISTORY CHART */}
+        <section className="card glucose-history">
+          <h3>📈 Blood Glucose History</h3>
+          {glucoseHistory.length > 0 && (
+  <p>
+    Latest reading:{' '}
+    <strong>
+      {glucoseHistory[glucoseHistory.length - 1].glucose} mg/dL
+    </strong>
+  </p>
+)}
+          <p>View your recorded glucose readings over time.</p>
+
+          <button onClick={loadGlucoseHistory}>
+            Load Glucose History
+          </button>
+
+          {glucoseHistory.length === 0 ? (
+            <p className="empty-state">
+  No glucose readings loaded yet. Click “Load Glucose History” to view your readings.
+</p>
+          ) : (
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={glucoseHistory}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="time"
+                  tickFormatter={(value) =>
+  new Date(value).toLocaleTimeString([], {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
+                />
+                <YAxis
+                  label={{
+                  value: 'Blood Glucose (mg/dL)',
+                  angle: -90,
+                  position: 'insideLeft',
+                  }}
+                />
+                <Tooltip
+                labelFormatter={(value) =>
+                   new Date(value).toLocaleString()
+                         }
+                   formatter={(value, name, props) => [
+                       `${value} mg/dL — ${props.payload.contextLabel}`,
+                   name,
+                   ]}
+                       contentStyle={{ borderRadius: '10px' }}
+                    />
+                <Line
+                type="monotone"
+                dataKey="glucose"
+                name="Glucose"
+                stroke="#168568"
+                strokeWidth={3}
+                dot={{ r: 4 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
         </section>
 
       </main>

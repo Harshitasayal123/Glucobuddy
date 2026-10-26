@@ -322,12 +322,14 @@ def get_glucose():
 
     try:
         cursor.execute(
-            """
-            SELECT id, user_id, glucose_value, reading_time, context
-            FROM glucose_readings
-            ORDER BY reading_time DESC;
-            """
-        )
+    """
+    SELECT id, user_id, glucose_value, reading_time, context
+    FROM glucose_readings
+    WHERE user_id = %s
+    ORDER BY reading_time DESC;
+    """,
+    (1,)
+)
 
         readings = cursor.fetchall()
         return {"readings": readings}
